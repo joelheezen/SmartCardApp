@@ -10,7 +10,7 @@
 
 void helloWorld();
 void displayBarcode();
-void displayUPC();
+void displayUPC(int index, int width, String str);
 void displayNumber(int index, int number);
 void displayCode39(int index, int width, String str);
 String getBinCode(char str);
@@ -25,6 +25,11 @@ void setup(){
     display.fillScreen(GxEPD_WHITE);
     displayCode39(10, 1, "*0966307*");
     display.display();
+
+    // display.setRotation(1);
+    // display.fillScreen(GxEPD_WHITE);
+    // displayUPC(10, 1, "0966307");
+    // display.display();
 
     display.hibernate();
 }
@@ -59,28 +64,37 @@ void displayCode39(int index, int width, String str){
     }
 }
 
-void displayNumber(int index, int number){
-    Serial.println(numbers[number]);
-    for(int i = 0; i < 7; i++){
-        if(numbers[number][i] == '0'){
-            display.fillRect(index, BARCODE_Y_START, 1, BARCODE_HEIGHT, GxEPD_WHITE); //OO
-        }else{
-            display.fillRect(index, BARCODE_Y_START, 1, BARCODE_HEIGHT, GxEPD_BLACK); //II
+void displayUPC(int index, int width, String str){
+    Serial.println(str);
+    display.fillRect(index+=width, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_BLACK);
+    display.fillRect(index+=width, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_WHITE);
+    display.fillRect(index+=width, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_BLACK);
+
+    for(int i = 0; i < str.length(); i++){
+        String code = getCode39(str[i]);
+        int color = GxEPD_WHITE;
+        for(int j = 0; j < 9; j++){
+            if(color == GxEPD_WHITE){
+                color = GxEPD_BLACK;
+            }else{
+                color = GxEPD_WHITE;
+            }
+            int bw;
+            if(code[j] == '0'){
+                bw = width;
+            }else{
+                bw = width * 2;
+            }
+            display.fillRect(index, BARCODE_Y_START, bw, BARCODE_HEIGHT, color);
+            index = index + bw;
         }
-        index++;
+        display.fillRect(index, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_WHITE); // might be optional
+        index = index + width;
     }
-}
 
-void displayUPC(){
-    int startingPosition = 10;
-    display.setRotation(1);
-    display.fillScreen(GxEPD_WHITE);
-    display.fillRect(startingPosition, BARCODE_Y_START, 2, BARCODE_HEIGHT, GxEPD_WHITE); //OO
-    display.fillRect(startingPosition + 2, BARCODE_Y_START, 2, BARCODE_HEIGHT, GxEPD_BLACK); //II
-    display.fillRect(startingPosition + 4, BARCODE_Y_START, 2, BARCODE_HEIGHT, GxEPD_WHITE); //OO
-    display.fillRect(startingPosition + 6, BARCODE_Y_START, 1, BARCODE_HEIGHT, GxEPD_BLACK); //I
-    display.display();
-
+    display.fillRect(index+=width, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_BLACK);
+    display.fillRect(index+=width, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_WHITE);
+    display.fillRect(index+=width, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_BLACK);
 }
 
 void helloWorld()
