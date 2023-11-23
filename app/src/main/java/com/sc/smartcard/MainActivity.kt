@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.navigation.fragment.findNavController
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import com.sc.smartcard.databinding.ActivityMainBinding
 
@@ -29,26 +30,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
 
-            val scanner = GmsBarcodeScanning.getClient(this)
-            scanner.startScan()
-                .addOnSuccessListener { barcode ->
-                    // Task completed successfully
-                    Snackbar.make(view, "This is the barcode: " + barcode.displayValue , Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                }
-                .addOnCanceledListener {
-                    // Task canceled
-                    Snackbar.make(view, "cancelled by user" , Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                }
-                .addOnFailureListener { e ->
-                    Snackbar.make(view, "Failed reason: "+ e , Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                    // Task failed with an exception
-                }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

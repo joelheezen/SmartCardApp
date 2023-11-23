@@ -1,5 +1,6 @@
 package com.sc.smartcard
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,8 @@ class SecondFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
 
+
+
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -31,8 +34,11 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonSecond.setOnClickListener {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
+        val rename = sharedPref.getString("tempBarcodeNumber", "empty")
+        binding.numberView.text = rename
+        binding.saveBtn.setOnClickListener {
+            //navigate back to home, and save data to prefs
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
     }
