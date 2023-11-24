@@ -1,22 +1,27 @@
-package com.sc.smartcard
+package com.sc.smartcard.ui
 
 import android.content.Context
-import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import com.sc.smartcard.R
 import com.sc.smartcard.databinding.FragmentFirstBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -52,7 +57,9 @@ class FirstFragment : Fragment() {
 
 
         binding.fab.setOnClickListener { view ->
-            startScanner(view)
+            GlobalScope.launch{
+                startScanner(view)
+            }
         }
     }
 
@@ -61,56 +68,52 @@ class FirstFragment : Fragment() {
         _binding = null
     }
 
-    private fun startScanner(view: View) {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
-        val scanRan = sharedPref.getString("scanDone", "false")
-        Log.e("scanran", scanRan.toString())
-        if(scanRan == "true"){
-            with (sharedPref.edit()) {
-                putString("scanDone", "false")
-                apply()
-            }
+    private suspend fun startScanner(view: View) {
+        val scanner = GmsBarcodeScanning.getClient(requireActivity())
+        try{
+            val barcode = scanner.startScan().await()
+            val barNum = barcode.displayValue.toString()
+            saveNum(barNum)
+            Log.d("app", "GONIG TO NEXTFRAMGNET")
             nextFragment()
-        }
-        else{
-            with (sharedPref.edit()) {
-                putString("tempBarcodeNumber", "empty")
-                putString("scanDone", "true")
-                apply()
-            }
-            val scanner = GmsBarcodeScanning.getClient(requireActivity())
-            scanner.startScan()
-                .addOnSuccessListener { barcode ->
-                    // Task completed successfully
-                    barNum = barcode.displayValue.toString()
-                    saveNum(barNum)
-                }
-                .addOnCanceledListener {
-                    // Task canceled
-                    Snackbar.make(view, "cancelled by user" , Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                }
-                .addOnFailureListener { e ->
-                    Snackbar.make(view, "Failed reason: "+ e , Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                    // Task failed with an exception
-                }
+        } catch(e: Exception){
+            Snackbar.make(view, "Failed reason: $e", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+            Log.e("app", e.toString())
         }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun Task<Barcode>.await(): Barcode = suspendCancellableCoroutine { cont ->
+        addOnSuccessListener { barcode ->
+            cont.resume(barcode)
+            saveNum(barcode.displayValue.toString())
+            barNum = barcode.displayValue.toString()
+        }
+        addOnCanceledListener {
+            cont.cancel()
+        }
+        addOnFailureListener {
+            cont.resumeWithException(it)
+        }
+    }
+
     private fun saveNum(num: String){
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
         with (sharedPref.edit()) {
             putString("tempBarcodeNumber", num)
             apply()
         }
-        Log.e("barnum= ", barNum)
+        Log.e("app ", barNum)
     }
 
     private fun nextFragment(){
-        Log.e("test", barNum)
+        Log.e("app", barNum)
         if (barNum != "empty"){
-            Log.e("test", "message")
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            Log.e("app", "message")
+            lifecycleScope.launch(Dispatchers.Main){
+                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            }
         }
     }
 }

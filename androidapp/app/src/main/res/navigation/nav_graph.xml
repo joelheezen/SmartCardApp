@@ -7,17 +7,18 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.sc.smartcard.FirstFragment"
+        android:name="com.sc.smartcard.ui.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/SecondFragment"
+            app:popUpTo="@id/SecondFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.sc.smartcard.SecondFragment"
+        android:name="com.sc.smartcard.ui.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
