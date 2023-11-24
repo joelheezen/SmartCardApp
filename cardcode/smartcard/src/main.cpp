@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#include <mfrc522.h>
+#include <SPI.h>
 #include <GxEPD2_BW.h>
 #include <Fonts/FreeMonoBold9pt7b.h>
 #include "numbers.h"
@@ -7,6 +9,12 @@
 // select the display class and display driver class in the following file (new style):
 #include "GxEPD2_display_selection_new_style.h"
 
+#define BARCODE_HEIGHT 75
+#define BARCODE_Y_START 10
+#define RST_PIN 9
+#define SS_PIN 4
+
+MFRC522 mfrc522(SS_PIN , RST_PIN);
 
 void helloWorld();
 void displayBarcode();
@@ -18,7 +26,12 @@ void drawCode39(int x, int y, int width, int height, int pitch,  String data);
 
 void setup(){
     Serial.begin(115200);
+    SPI.begin();
+    mfrc522.PCD_Init();
     display.init(115200, true, 2, false);
+    delay(2);
+    mfrc522.PCD_DumpVersionToSerial();
+    Serial.println("Scan PICC to see UID, SAK, type, and dat blocks...");
     // displayUPC();
 
     display.setRotation(1);
@@ -36,8 +49,6 @@ void setup(){
 
 const char HelloWorld[] = "Hello World!";
 
-#define BARCODE_HEIGHT 75
-#define BARCODE_Y_START 10
 
 void displayCode39(int index, int width, String str){
     Serial.println(str);
@@ -119,5 +130,13 @@ void helloWorld()
 }
 
 void loop(){
+    if(!mfrc522.PICC_IsNewCardPresent()){
+        return;
+    }
+
+    if(!mfrc522.PICC_ReadCardSerial()){
+        return;
+    }
+    mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
 
 }
