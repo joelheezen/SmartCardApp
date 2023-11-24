@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
 #include <mfrc522.h>
-#include <SPI.h>
 #include <GxEPD2_BW.h>
 #include <Fonts/FreeMonoBold9pt7b.h>
 #include "numbers.h"
@@ -26,7 +25,6 @@ void drawCode39(int x, int y, int width, int height, int pitch,  String data);
 
 void setup(){
     Serial.begin(115200);
-    SPI.begin();
     mfrc522.PCD_Init();
     display.init(115200, true, 2, false);
     delay(2);
