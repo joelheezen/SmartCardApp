@@ -1,22 +1,18 @@
 package com.sc.smartcard
 
 import android.content.Context
-import android.media.session.MediaSession.Token
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
-import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import com.sc.smartcard.databinding.FragmentFirstBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -46,13 +42,35 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        binding.linLay.removeAllViews()
 
+        sharedPref.getStringSet("barcodes", HashSet())?.forEach {
+            Log.e("loop", it)
+            val card = CardView(requireActivity())
+            val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+            lp.setMargins(0,7,0,0)
+            card.layoutParams = lp
+            val tvlp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+            tvlp.setMargins(0,7,0,0)
+            val name = TextView(requireActivity())
+            name.layoutParams = tvlp
 
-
+            val number = TextView(requireActivity())
+            number.gravity = Gravity.RIGHT
+            number.layoutParams = tvlp
+            binding.linLay.addView(card)
+            card.removeAllViews()
+            card.addView(name)
+            val delimiter = "/"
+            val values = it.split(delimiter)
+            name.text = values[0]
+            card.addView(number)
+            number.text = values[1]
+        }
 
         binding.fab.setOnClickListener { view ->
-            startScanner(view)
+            nextFragment()
         }
     }
 
@@ -61,42 +79,6 @@ class FirstFragment : Fragment() {
         _binding = null
     }
 
-    private fun startScanner(view: View) {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
-        val scanRan = sharedPref.getString("scanDone", "false")
-        Log.e("scanran", scanRan.toString())
-        if(scanRan == "true"){
-            with (sharedPref.edit()) {
-                putString("scanDone", "false")
-                apply()
-            }
-            nextFragment()
-        }
-        else{
-            with (sharedPref.edit()) {
-                putString("tempBarcodeNumber", "empty")
-                putString("scanDone", "true")
-                apply()
-            }
-            val scanner = GmsBarcodeScanning.getClient(requireActivity())
-            scanner.startScan()
-                .addOnSuccessListener { barcode ->
-                    // Task completed successfully
-                    barNum = barcode.displayValue.toString()
-                    saveNum(barNum)
-                }
-                .addOnCanceledListener {
-                    // Task canceled
-                    Snackbar.make(view, "cancelled by user" , Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                }
-                .addOnFailureListener { e ->
-                    Snackbar.make(view, "Failed reason: "+ e , Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-                    // Task failed with an exception
-                }
-        }
-    }
     private fun saveNum(num: String){
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
         with (sharedPref.edit()) {
@@ -107,10 +89,6 @@ class FirstFragment : Fragment() {
     }
 
     private fun nextFragment(){
-        Log.e("test", barNum)
-        if (barNum != "empty"){
-            Log.e("test", "message")
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
     }
 }
