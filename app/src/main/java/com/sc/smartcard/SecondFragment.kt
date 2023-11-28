@@ -92,6 +92,7 @@ class SecondFragment : Fragment() {
                     .setAction("Action", null).show()
             }
             .addOnFailureListener { e ->
+                Log.e("error", e.toString())
                 Snackbar.make(view, "Failed reason: "+ e , Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
                 // Task failed with an exception
