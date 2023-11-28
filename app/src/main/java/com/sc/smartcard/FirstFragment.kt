@@ -71,6 +71,9 @@ class FirstFragment : Fragment() {
             name.text = values[0]
             number.text = values[1]
             format.text = values[2]
+            card.setOnClickListener {view ->
+                editFragment(it)
+            }
         }
 
         binding.fab.setOnClickListener { view ->
@@ -94,5 +97,14 @@ class FirstFragment : Fragment() {
 
     private fun nextFragment(){
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+    }
+
+    private fun editFragment(data:String){
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
+        with (sharedPref.edit()){
+            putString("tempData", data)
+            apply()
+        }
+            findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
     }
 }
