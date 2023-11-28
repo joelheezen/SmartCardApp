@@ -13,11 +13,13 @@ val L = sharedPref.getStringSet("barcodes", HashSet()) // L = ("name0/number0/fo
 then split using a delimiter like so:
 
 ```
-val str = L[0]
-val delimiter = "/"
-val values = str.split(delimiter)
-values[0] = name
-values[1] = number
-values[2] = format
+L.forEach{
+    val str = it
+    val delimiter = "/"
+    val values = str.split(delimiter)
+    values[0] = name
+    values[1] = number
+    values[2] = format
+    }
 ```
  
