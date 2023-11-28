@@ -18,6 +18,7 @@ import com.sc.smartcard.databinding.FragmentSecondBinding
 class SecondFragment : Fragment() {
 
     private var _binding: FragmentSecondBinding? = null
+    private var format = "empty"
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -50,7 +51,7 @@ class SecondFragment : Fragment() {
         }
         binding.saveBtn.setOnClickListener {
             //navigate back to home, and save data to prefs if string is changed
-            if (binding.numberView.text == rename){
+            if (binding.numberView.text == rename || format == "empty"){
                 Snackbar.make(view, "please scan code before saving" , Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
@@ -61,7 +62,7 @@ class SecondFragment : Fragment() {
             else{
                 val numberText = binding.numberView.text as String
                 val nameText = binding.nameEdit.text.toString()
-                newSet.add(nameText + "/" + numberText)
+                newSet.add(nameText + "/" + numberText + "/" + format)
                 with (sharedPref.edit()) {
                     putStringSet("barcodes", newSet)
                     apply()
@@ -82,6 +83,7 @@ class SecondFragment : Fragment() {
             .addOnSuccessListener { barcode ->
                 // Task completed successfully
                 val barNum = barcode.displayValue.toString()
+                format = barcode.format.toString()
                 binding.numberView.text = barNum
             }
             .addOnCanceledListener {

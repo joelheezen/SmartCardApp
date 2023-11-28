@@ -50,22 +50,31 @@ class FirstFragment : Fragment() {
             val card = CardView(requireActivity())
             val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
             lp.setMargins(0,7,0,0)
+            lp.height = 50
             card.layoutParams = lp
             val tvlp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
             tvlp.setMargins(0,7,0,0)
             val name = TextView(requireActivity())
             name.layoutParams = tvlp
+            val format = TextView(requireActivity())
+            format.layoutParams = tvlp
+            format.gravity = Gravity.CENTER and Gravity.BOTTOM
             val number = TextView(requireActivity())
-            number.gravity = Gravity.RIGHT
+            number.gravity = Gravity.END
             number.layoutParams = tvlp
             binding.linLay.addView(card)
             card.removeAllViews()
             card.addView(name)
+            card.addView(format)
+            card.addView(number)
             val delimiter = "/"
             val values = it.split(delimiter)
             name.text = values[0]
-            card.addView(number)
             number.text = values[1]
+            format.text = values[2]
+            card.setOnClickListener {view ->
+                editFragment(it)
+            }
         }
 
         binding.fab.setOnClickListener { view ->
@@ -89,5 +98,14 @@ class FirstFragment : Fragment() {
 
     private fun nextFragment(){
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+    }
+
+    private fun editFragment(data:String){
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
+        with (sharedPref.edit()){
+            putString("tempData", data)
+            apply()
+        }
+            findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
     }
 }
