@@ -50,6 +50,7 @@ class FirstFragment : Fragment() {
             val card = CardView(requireActivity())
             val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
             lp.setMargins(0,7,0,0)
+            lp.height = 50
             card.layoutParams = lp
             val tvlp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
             tvlp.setMargins(0,7,0,0)
