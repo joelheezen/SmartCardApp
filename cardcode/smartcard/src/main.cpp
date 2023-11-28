@@ -1,5 +1,5 @@
 #include <Arduino.h>
-
+#include <SPI.h>
 #include <mfrc522.h>
 #include <GxEPD2_BW.h>
 #include <Fonts/FreeMonoBold9pt7b.h>
@@ -25,24 +25,25 @@ void drawCode39(int x, int y, int width, int height, int pitch,  String data);
 
 void setup(){
     Serial.begin(115200);
+    SPI.begin();
     mfrc522.PCD_Init();
-    display.init(115200, true, 2, false);
+    // display.init(115200, true, 2, false);
     delay(2);
     mfrc522.PCD_DumpVersionToSerial();
     Serial.println("Scan PICC to see UID, SAK, type, and dat blocks...");
     // displayUPC();
 
-    display.setRotation(1);
-    display.fillScreen(GxEPD_WHITE);
-    displayCode39(10, 1, "*0966307*");
-    display.display();
+    // display.setRotation(1);
+    // display.fillScreen(GxEPD_WHITE);
+    // displayCode39(10, 1, "*0966307*");
+    // display.display();
 
     // display.setRotation(1);
     // display.fillScreen(GxEPD_WHITE);
     // displayUPC(10, 1, "0966307");
     // display.display();
 
-    display.hibernate();
+    // display.hibernate();
 }
 
 const char HelloWorld[] = "Hello World!";
