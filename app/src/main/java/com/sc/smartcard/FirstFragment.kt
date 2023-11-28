@@ -55,7 +55,6 @@ class FirstFragment : Fragment() {
             tvlp.setMargins(0,7,0,0)
             val name = TextView(requireActivity())
             name.layoutParams = tvlp
-
             val number = TextView(requireActivity())
             number.gravity = Gravity.RIGHT
             number.layoutParams = tvlp
