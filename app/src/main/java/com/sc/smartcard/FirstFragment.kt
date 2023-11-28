@@ -55,18 +55,22 @@ class FirstFragment : Fragment() {
             tvlp.setMargins(0,7,0,0)
             val name = TextView(requireActivity())
             name.layoutParams = tvlp
-
+            val format = TextView(requireActivity())
+            format.layoutParams = tvlp
+            format.gravity = Gravity.CENTER and Gravity.BOTTOM
             val number = TextView(requireActivity())
-            number.gravity = Gravity.RIGHT
+            number.gravity = Gravity.END
             number.layoutParams = tvlp
             binding.linLay.addView(card)
             card.removeAllViews()
             card.addView(name)
+            card.addView(format)
+            card.addView(number)
             val delimiter = "/"
             val values = it.split(delimiter)
             name.text = values[0]
-            card.addView(number)
             number.text = values[1]
+            format.text = values[2]
         }
 
         binding.fab.setOnClickListener { view ->
