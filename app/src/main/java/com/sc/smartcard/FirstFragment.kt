@@ -66,7 +66,7 @@ class FirstFragment : Fragment() {
             card.addView(name)
             card.addView(format)
             card.addView(number)
-            val delimiter = "/"
+            val delimiter = "|"
             val values = it.split(delimiter)
             name.text = values[0]
             number.text = values[1]

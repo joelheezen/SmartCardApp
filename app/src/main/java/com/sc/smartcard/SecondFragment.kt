@@ -62,7 +62,7 @@ class SecondFragment : Fragment() {
             else{
                 val numberText = binding.numberView.text as String
                 val nameText = binding.nameEdit.text.toString()
-                newSet.add(nameText + "/" + numberText + "/" + format)
+                newSet.add(nameText + "|" + numberText + "|" + format)
                 with (sharedPref.edit()) {
                     putStringSet("barcodes", newSet)
                     apply()
