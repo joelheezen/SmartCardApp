@@ -38,7 +38,7 @@ class ThirdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
-        val str = sharedPref.getString("data", "empty")
+        val str = sharedPref.getString("tempData", "empty")
         val delimiter = "/"
         val values = str?.split(delimiter)
         if (values != null){

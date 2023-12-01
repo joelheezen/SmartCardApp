@@ -23,3 +23,10 @@ L.forEach{
     }
 ```
  
+# barcode formats
+
+barcodes are returned as an int, so for example, EAN-13 is denoted as 32
+
+https://developers.google.com/android/reference/com/google/mlkit/vision/barcode/common/Barcode#FORMAT_EAN_13
+
+check the link for explanation and complete formats compatible with this scanner.

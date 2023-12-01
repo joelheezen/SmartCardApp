@@ -48,17 +48,16 @@ class FirstFragment : Fragment() {
         sharedPref.getStringSet("barcodes", HashSet())?.forEach {
             Log.e("loop", it)
             val card = CardView(requireActivity())
-            val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+            val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,400)
             lp.setMargins(0,7,0,0)
-            lp.height = 50
             card.layoutParams = lp
-            val tvlp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+            val tvlp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT)
             tvlp.setMargins(0,7,0,0)
             val name = TextView(requireActivity())
             name.layoutParams = tvlp
             val format = TextView(requireActivity())
             format.layoutParams = tvlp
-            format.gravity = Gravity.CENTER and Gravity.BOTTOM
+            format.gravity = Gravity.CENTER
             val number = TextView(requireActivity())
             number.gravity = Gravity.END
             number.layoutParams = tvlp
@@ -74,6 +73,7 @@ class FirstFragment : Fragment() {
             format.text = values[2]
             card.setOnClickListener {view ->
                 editFragment(it)
+                thirdFragment()
             }
         }
 
@@ -87,15 +87,6 @@ class FirstFragment : Fragment() {
         _binding = null
     }
 
-    private fun saveNum(num: String){
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
-        with (sharedPref.edit()) {
-            putString("tempBarcodeNumber", num)
-            apply()
-        }
-        Log.e("barnum= ", barNum)
-    }
-
     private fun nextFragment(){
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
     }
@@ -106,6 +97,10 @@ class FirstFragment : Fragment() {
             putString("tempData", data)
             apply()
         }
-            findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
+        Log.e("test", data)
+
+    }
+    private fun thirdFragment(){
+        findNavController().navigate(R.id.action_FirstFragment_to_ThirdFragment)
     }
 }
