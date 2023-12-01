@@ -52,7 +52,9 @@ class MainActivity : AppCompatActivity() {
                 if (it.areModulesAlreadyInstalled()) {
                     Toast.makeText(this, "Modules are already installed", Toast.LENGTH_LONG).show()
                 }
-                Toast.makeText(this, "Modules successfully installed", Toast.LENGTH_LONG).show()
+                else{
+                    Toast.makeText(this, "Modules successfully installed", Toast.LENGTH_LONG).show()
+                }
             }
             .addOnFailureListener {
                 Log.e("MainActivity", "Error installing modules", it)
