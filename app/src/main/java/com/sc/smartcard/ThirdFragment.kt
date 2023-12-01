@@ -1,5 +1,6 @@
 package com.sc.smartcard
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.sc.smartcard.databinding.FragmentThirdBinding
 
 /**
@@ -48,18 +50,28 @@ class ThirdFragment : Fragment() {
         }
         binding.delBtn.setOnClickListener{view ->
             //save new data and return back to firstfragment
-            val stringSet  = sharedPref.getStringSet("barcodes", HashSet())
-            val copy = HashSet<String>()
-            stringSet?.forEach{
-                if (it != str){
-                    copy.add(it)
+            val builder = AlertDialog.Builder(this.context)
+            builder.setTitle("Are you sure?")
+            builder.setMessage("Press OK to delete.")
+            builder.setPositiveButton("OK") { dialog, which ->
+                val stringSet  = sharedPref.getStringSet("barcodes", HashSet())
+                val copy = HashSet<String>()
+                stringSet?.forEach{
+                    if (it != str){
+                        copy.add(it)
+                    }
                 }
+                with (sharedPref.edit()) {
+                    putStringSet("barcodes", copy)
+                    apply()
+                }
+                findNavController().navigate(R.id.action_ThirdFragment_to_FirstFragment)
             }
-            with (sharedPref.edit()) {
-                putStringSet("barcodes", copy)
-                apply()
+            builder.setNegativeButton("cancel") { dialog, which ->
+                Snackbar.make(view, "Cancelled delete request" , Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
             }
-            findNavController().navigate(R.id.action_ThirdFragment_to_FirstFragment)
+            builder.show()
         }
     }
     override fun onDestroyView() {
