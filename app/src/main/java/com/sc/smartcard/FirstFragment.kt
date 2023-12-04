@@ -4,15 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.sc.smartcard.databinding.FragmentFirstBinding
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -47,31 +48,19 @@ class FirstFragment : Fragment() {
 
         sharedPref.getStringSet("barcodes", HashSet())?.forEach {
             Log.e("loop", it)
-            val card = CardView(requireActivity())
-            val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,400)
-            lp.setMargins(0,7,0,0)
-            card.layoutParams = lp
-            val tvlp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT)
-            tvlp.setMargins(0,7,0,0)
-            val name = TextView(requireActivity())
-            name.layoutParams = tvlp
-            val format = TextView(requireActivity())
-            format.layoutParams = tvlp
-            format.gravity = Gravity.CENTER
-            val number = TextView(requireActivity())
-            number.gravity = Gravity.END
-            number.layoutParams = tvlp
-            binding.linLay.addView(card)
-            card.removeAllViews()
-            card.addView(name)
-            card.addView(format)
-            card.addView(number)
+
+            val inflater = LayoutInflater.from(context)
+            val layout = inflater.inflate(R.layout.card, null, false)
+            val cv = layout.findViewById<CardView>(R.id.CV)
+            val vg = cv.parent as ViewGroup
+            vg.removeView(cv)
+            binding.linLay.addView(cv)
             val delimiter = "|"
             val values = it.split(delimiter)
-            name.text = values[0]
-            number.text = values[1]
-            format.text = values[2]
-            card.setOnClickListener {view ->
+            cv.findViewById<TextView>(R.id.textView).text = values[0]
+            cv.findViewById<TextView>(R.id.textView2).text = values[1]
+            cv.findViewById<TextView>(R.id.textView3).text = values[2]
+            cv.setOnClickListener {view ->
                 editFragment(it)
                 thirdFragment()
             }
