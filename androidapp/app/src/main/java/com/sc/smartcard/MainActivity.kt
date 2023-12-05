@@ -10,7 +10,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import com.sc.smartcard.databinding.ActivityMainBinding
 
@@ -31,6 +34,31 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        val scanner = GmsBarcodeScanning.getClient(this)
+
+        val moduleInstallRequest =
+            ModuleInstallRequest.newBuilder()
+                .addApi(scanner) //Add the scanner client to the module install request
+                .build()
+
+        val moduleInstallClient = ModuleInstall.getClient(this)
+
+        //Send an urgent module install request see https://developers.google.com/android/guides/module-install-apis#send_an_urgent_module_install_request
+        //If you'd like the OS to determine the best time, use a deferred install request, but I'd recommend the urgent one
+        //See https://developers.google.com/android/guides/module-install-apis#send_a_deferred_install_request
+        moduleInstallClient
+            .installModules(moduleInstallRequest)
+            .addOnSuccessListener {
+                if (it.areModulesAlreadyInstalled()) {
+                    Toast.makeText(this, "Modules are already installed", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    Toast.makeText(this, "Modules successfully installed", Toast.LENGTH_LONG).show()
+                }
+            }
+            .addOnFailureListener {
+                Log.e("MainActivity", "Error installing modules", it)
+            }
 
     }
 

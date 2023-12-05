@@ -1,0 +1,60 @@
+(footprint "SOD323_ST" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (descr "<b>SOD-323</b><p>\nSource: www.st.com, BAT60J.pdf")
+  (fp_text reference "REF**" (at -1.65 -0.75) (layer "F.SilkS")
+      (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
+    (tstamp c183ad35-da12-4e8d-a908-11496e9a70b0)
+  )
+  (fp_text value "SOD323_ST" (at -1.65 2) (layer "F.Fab")
+      (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
+    (tstamp 1639e6e7-26f5-4366-b073-3e9d88a5beb4)
+  )
+  (fp_line (start -0.85 -0.55) (end 0.85 -0.55)
+    (stroke (width 0.1016) (type solid)) (layer "F.SilkS") (tstamp 371ab897-f1eb-4fb6-aade-a2ec1d459ec3))
+  (fp_line (start 0.85 0.55) (end -0.85 0.55)
+    (stroke (width 0.1016) (type solid)) (layer "F.SilkS") (tstamp f9da121a-d617-43a8-95d4-bec60770c5c6))
+  (fp_poly
+    (pts
+      (xy -0.65 0.55)
+      (xy -0.05 0.55)
+      (xy -0.05 -0.55)
+      (xy -0.65 -0.55)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.SilkS") (tstamp ba6c465b-01a5-4c41-8033-370cfb209fb8))
+  (fp_line (start -0.85 0.55) (end -0.85 -0.55)
+    (stroke (width 0.1016) (type solid)) (layer "F.Fab") (tstamp 32fc486a-f9bf-4703-8969-4cf83a850770))
+  (fp_line (start 0.85 -0.55) (end 0.85 0.55)
+    (stroke (width 0.1016) (type solid)) (layer "F.Fab") (tstamp 9ed95ca9-0fda-46ce-a1b3-cff5385f9c31))
+  (fp_poly
+    (pts
+      (xy -1.35 0.15)
+      (xy -0.8 0.15)
+      (xy -0.8 -0.15)
+      (xy -1.35 -0.15)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 7609f997-2781-46c8-a745-e50b15731fe5))
+  (fp_poly
+    (pts
+      (xy -0.85 0.55)
+      (xy -0.05 0.55)
+      (xy -0.05 -0.55)
+      (xy -0.85 -0.55)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp e6618a2c-513d-4c9c-ab53-b7f295c9afe5))
+  (fp_poly
+    (pts
+      (xy 0.8 0.15)
+      (xy 1.35 0.15)
+      (xy 1.35 -0.15)
+      (xy 0.8 -0.15)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp af60d22f-64ff-40f4-8104-333f697e189d))
+  (pad "A" smd rect (at 1.25 0) (size 0.8 0.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp dd8e50f7-5cb6-4698-be3e-2167346c86b4))
+  (pad "C" smd rect (at -1.25 0) (size 0.8 0.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 6ff8d504-f621-49d0-9190-22b4617c88c6))
+)
