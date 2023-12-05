@@ -1,0 +1,92 @@
+(footprint "SOT883(B)" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (descr "<li><b>SOT883(B)</b><hr>\n<ul><li>Plastic surface-mounted package; 3 leads\n<li><u>JEDEC</u>: --\n<li><u>IEC</u>: --\n<li><u>JEITA</u>: SC-101</ul>\n\nRemark: SOT883B has the same footprint, package is lower")
+  (fp_text reference "REF**" (at 1 -0.5) (layer "F.SilkS")
+      (effects (font (size 0.92 0.92) (thickness 0.08)) (justify left bottom))
+    (tstamp 9250db82-e584-40f3-93c9-4e5579eeb75d)
+  )
+  (fp_text value "SOT883(B)" (at 1 1) (layer "F.Fab")
+      (effects (font (size 0.92 0.92) (thickness 0.08)) (justify left bottom))
+    (tstamp 0452ba77-b782-4e62-a326-ec0f0f345220)
+  )
+  (fp_text user "SOT883(B)" (at -0.75 0.75) (layer "F.Fab")
+      (effects (font (size 0.184 0.184) (thickness 0.016)) (justify left bottom))
+    (tstamp 1c2c3264-d895-4155-91ab-039524b87da7)
+  )
+  (fp_poly
+    (pts
+      (xy 0.213359 0.3)
+      (xy 0.467359 0.3)
+      (xy 0.467359 -0.3)
+      (xy 0.213359 -0.3)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Paste") (tstamp b00019ad-cfe4-4ac4-817b-34df5a86d708))
+  (fp_poly
+    (pts
+      (xy -0.2 -0.3)
+      (xy -0.2 -0.15)
+      (xy -0.25 -0.1)
+      (xy -0.45 -0.1)
+      (xy -0.5 -0.15)
+      (xy -0.5 -0.3)
+      (xy -0.45 -0.35)
+      (xy -0.25 -0.35)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Paste") (tstamp fd6eda7c-4e62-4f00-8785-420e1308cdc1))
+  (fp_poly
+    (pts
+      (xy -0.2 0.15)
+      (xy -0.2 0.3)
+      (xy -0.25 0.35)
+      (xy -0.45 0.35)
+      (xy -0.5 0.3)
+      (xy -0.5 0.15)
+      (xy -0.45 0.1)
+      (xy -0.25 0.1)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Paste") (tstamp 868e5aa3-5615-4633-8219-10487f6125ad))
+  (fp_poly
+    (pts
+      (xy -0.6 -0.05)
+      (xy -0.1 -0.05)
+      (xy -0.1 -0.4)
+      (xy -0.6 -0.4)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Mask") (tstamp 57f73686-8022-48cc-83bf-07396051ef81))
+  (fp_poly
+    (pts
+      (xy -0.6 0.4)
+      (xy -0.1 0.4)
+      (xy -0.1 0.05)
+      (xy -0.6 0.05)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Mask") (tstamp ac8ffda8-5990-4688-b538-3efed2f78d09))
+  (fp_poly
+    (pts
+      (xy 0.1 0.4)
+      (xy 0.6 0.4)
+      (xy 0.6 -0.4)
+      (xy 0.1 -0.4)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Mask") (tstamp 6de7129e-29dd-4b7c-8726-6b0dbab833be))
+  (fp_line (start -0.5 -0.3) (end 0.5 -0.3)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp 23d3ba88-9fcc-4b30-9751-9cdc00afe7ef))
+  (fp_line (start -0.5 0.3) (end -0.5 -0.3)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp 859b3e25-df67-461e-a6f4-7b2a21e89dda))
+  (fp_line (start 0.5 -0.3) (end 0.5 0.3)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp 0baeb48f-12f8-47d5-ac9a-46806d5a17dc))
+  (fp_line (start 0.5 0.3) (end -0.5 0.3)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp 4391796a-404e-4112-9175-accee9559e24))
+  (pad "1" smd roundrect (at -0.35 -0.225) (size 0.4 0.25) (layers "F.Cu") (roundrect_rratio 0.125)
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp b3f52681-6b04-49c4-aea9-4d6d6786976d))
+  (pad "2" smd roundrect (at -0.35 0.225) (size 0.4 0.25) (layers "F.Cu") (roundrect_rratio 0.125)
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 78dab122-a582-46c2-9ef9-c8cd6ddf783a))
+  (pad "3" smd roundrect (at 0.35 0) (size 0.4 0.7) (layers "F.Cu") (roundrect_rratio 0.125)
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 8cdacf8d-31e0-4400-b74d-b24124087a3b))
+)

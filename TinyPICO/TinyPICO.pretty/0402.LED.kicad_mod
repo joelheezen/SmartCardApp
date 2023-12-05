@@ -1,0 +1,76 @@
+(footprint "0402.LED" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (descr "http://www.us.kingbright.com/images/catalog/SPEC/APHHS1005SURCK.pdf")
+  (fp_text reference "REF**" (at -1.016 -0.635) (layer "F.SilkS")
+      (effects (font (size 0.373888 0.373888) (thickness 0.032512)) (justify left bottom))
+    (tstamp c00ac2d2-f7e4-49d4-a6ed-c940b3e0382e)
+  )
+  (fp_text value "0402.LED" (at -1.016 1.016) (layer "F.Fab")
+      (effects (font (size 0.373888 0.373888) (thickness 0.032512)) (justify left bottom))
+    (tstamp 3150ffbe-fe5c-4e14-ac6a-1237b5747c5e)
+  )
+  (fp_poly
+    (pts
+      (xy -0.8636 0.254)
+      (xy -0.254 0.254)
+      (xy -0.254 -0.254)
+      (xy -0.8636 -0.254)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Paste") (tstamp 91781dc4-f682-4980-9006-3a90177f70ae))
+  (fp_poly
+    (pts
+      (xy 0.254 0.254)
+      (xy 0.8636 0.254)
+      (xy 0.8636 -0.254)
+      (xy 0.254 -0.254)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Paste") (tstamp ab46a817-03d4-460a-8af9-ca99a0dfc9ba))
+  (fp_line (start -0.1 -0.2) (end -0.1 0)
+    (stroke (width 0.1) (type solid)) (layer "F.SilkS") (tstamp f53378e9-a76d-4709-bfb2-5f3c03fa9242))
+  (fp_line (start -0.1 0) (end -0.1 0.2)
+    (stroke (width 0.1) (type solid)) (layer "F.SilkS") (tstamp dffb9126-3e81-4781-a77e-d1111ed8c487))
+  (fp_line (start -0.1 0) (end 0.1 0)
+    (stroke (width 0.1) (type solid)) (layer "F.SilkS") (tstamp 7d1739a8-994f-43ed-8095-1f0642e5317d))
+  (fp_poly
+    (pts
+      (xy -0.25 -0.2)
+      (xy 0.25 -0.2)
+      (xy 0.25 -0.25)
+      (xy -0.25 -0.25)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.SilkS") (tstamp c04b014f-2ec2-4857-82c3-75d1440d4fd6))
+  (fp_poly
+    (pts
+      (xy -0.25 0.25)
+      (xy 0.25 0.25)
+      (xy 0.25 0.2)
+      (xy -0.25 0.2)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.SilkS") (tstamp 6a0cd291-b936-45c8-8365-dcb43be7d60e))
+  (fp_poly
+    (pts
+      (xy -0.95 0.3)
+      (xy -0.15 0.3)
+      (xy -0.15 -0.3)
+      (xy -0.95 -0.3)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Mask") (tstamp 09701f02-dd37-4325-a1e8-9478f4d38ce0))
+  (fp_poly
+    (pts
+      (xy 0.15 0.3)
+      (xy 0.95 0.3)
+      (xy 0.95 -0.3)
+      (xy 0.15 -0.3)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Mask") (tstamp a1b9d573-db20-4db8-bb83-245eb5f7a650))
+  (pad "P$1" smd rect (at -0.55 0) (size 0.7 0.5) (layers "F.Cu")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 43b6a922-6cf7-473c-ba9b-eb3914af8956))
+  (pad "P$2" smd rect (at 0.55 0) (size 0.7 0.5) (layers "F.Cu")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 5483b5d5-0452-4355-856a-0f3a865adafe))
+)

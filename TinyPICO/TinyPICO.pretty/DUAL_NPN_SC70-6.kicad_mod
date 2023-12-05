@@ -1,0 +1,88 @@
+(footprint "DUAL_NPN_SC70-6" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (descr "<h3>SC-88/SC70-6/SOT-363 6-pin Package</h3>\n<p><a href=\"http://www.onsemi.com/pub_link/Collateral/MBT3904DW1T1-D.PDF\">Example Datasheet</a></p>")
+  (fp_text reference "REF**" (at 0 -1.397) (layer "F.SilkS")
+      (effects (font (size 0.48768 0.48768) (thickness 0.12192)) (justify bottom))
+    (tstamp 45d90f8d-2df6-49c5-9fc4-ad0f3f409f20)
+  )
+  (fp_text value "DUAL_NPN_SC70-6" (at 0 1.397) (layer "F.Fab")
+      (effects (font (size 0.48768 0.48768) (thickness 0.12192)) (justify top))
+    (tstamp 9466c59a-b5ce-44fb-889b-f37261dc7852)
+  )
+  (fp_circle (center -0.6985 0.127) (end -0.5969 0.127)
+    (stroke (width 0.2032) (type solid)) (fill solid) (layer "F.SilkS") (tstamp 928371b8-08c0-4b67-b916-92196a463854))
+  (fp_line (start -1 -0.625) (end -1 0.625)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp 26dd7711-7b11-4987-82c8-34d577971e30))
+  (fp_line (start -1 0.625) (end 1 0.625)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp 5143dbbf-23f6-46d9-bcb7-626251831c5e))
+  (fp_line (start 1 -0.625) (end -1 -0.625)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp ecacda26-576c-4a20-b2db-e5b2789adab0))
+  (fp_line (start 1 0.625) (end 1 -0.625)
+    (stroke (width 0.127) (type solid)) (layer "F.Fab") (tstamp 85c094d2-411c-404c-a95f-5d976c606a67))
+  (fp_poly
+    (pts
+      (xy -0.7516 -0.6858)
+      (xy -0.5484 -0.6858)
+      (xy -0.5484 -1.0414)
+      (xy -0.7516 -1.0414)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 5ab151ed-a0d8-495d-bad2-59783abfe308))
+  (fp_poly
+    (pts
+      (xy -0.7516 1.0414)
+      (xy -0.5484 1.0414)
+      (xy -0.5484 0.6858)
+      (xy -0.7516 0.6858)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 633ef266-36b3-483c-80b2-910c99a1b1b5))
+  (fp_poly
+    (pts
+      (xy -0.1016 -0.6858)
+      (xy 0.1016 -0.6858)
+      (xy 0.1016 -1.0414)
+      (xy -0.1016 -1.0414)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp c3eb8bdf-fe0b-45a4-8a40-c642f45419c5))
+  (fp_poly
+    (pts
+      (xy -0.1016 1.0414)
+      (xy 0.1016 1.0414)
+      (xy 0.1016 0.6858)
+      (xy -0.1016 0.6858)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 7a005701-bd8b-4c7d-ab03-df2561e00cc7))
+  (fp_poly
+    (pts
+      (xy 0.5484 -0.6858)
+      (xy 0.7516 -0.6858)
+      (xy 0.7516 -1.0414)
+      (xy 0.5484 -1.0414)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 6ca3f42b-d49b-463a-834f-f028cac68eda))
+  (fp_poly
+    (pts
+      (xy 0.5484 1.0414)
+      (xy 0.7516 1.0414)
+      (xy 0.7516 0.6858)
+      (xy 0.5484 0.6858)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp cfeddfae-bc75-4800-bfa5-45880a84c469))
+  (pad "1" smd rect (at -0.65 0.92 180) (size 0.3 0.66) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 85e59e58-1807-415e-a4e1-425980b51010))
+  (pad "2" smd rect (at 0 0.92 180) (size 0.3 0.66) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp f04d46bf-ded8-4a05-b71d-4e8ea7667a61))
+  (pad "3" smd rect (at 0.65 0.92 180) (size 0.3 0.66) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 966d0d81-4852-4c7e-8d68-c44fa4767665))
+  (pad "4" smd rect (at 0.65 -0.92) (size 0.3 0.66) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp fa0bd145-091e-44f1-a029-fa416dbd4791))
+  (pad "5" smd rect (at 0 -0.92) (size 0.3 0.66) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 985620d5-8f01-42d0-b9cd-9198d808ae63))
+  (pad "6" smd rect (at -0.65 -0.92) (size 0.3 0.66) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 928f4df6-4a8b-4d50-94ed-9ba85b853988))
+)

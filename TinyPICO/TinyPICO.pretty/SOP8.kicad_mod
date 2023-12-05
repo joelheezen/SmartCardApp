@@ -1,0 +1,108 @@
+(footprint "SOP8" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (descr "<b>SOP8</b><p>\nSource: http://www.rohm.com/products/databook/motor/pdf/bd623x_series-e.pdf")
+  (fp_text reference "REF**" (at -3.175 3.175 90) (layer "F.SilkS")
+      (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
+    (tstamp 8ff75789-7de0-4f48-ad30-c68c1e291fca)
+  )
+  (fp_text value "SOP8" (at 4.445 3.175 90) (layer "F.Fab")
+      (effects (font (size 1.1684 1.1684) (thickness 0.1016)) (justify left bottom))
+    (tstamp cfbfaa0f-62e8-456c-8ebc-5e86ec0fc009)
+  )
+  (fp_line (start -2.649 2.11) (end -2.649 -2.085)
+    (stroke (width 0.2032) (type solid)) (layer "F.SilkS") (tstamp b2324fda-de19-4e57-a9f0-4b1d0ac388bb))
+  (fp_arc (start -2.594 -0.635) (mid -1.959 0) (end -2.594 0.635)
+    (stroke (width 0.2032) (type solid)) (layer "F.SilkS") (tstamp eae27f64-2991-471d-91de-7dad70521157))
+  (fp_line (start -2.395 -2.085) (end 2.395 -2.085)
+    (stroke (width 0.2032) (type solid)) (layer "F.Fab") (tstamp 35eafbf1-ca22-4a1d-9982-e0536d1b43af))
+  (fp_line (start 2.395 2.11) (end -2.395 2.11)
+    (stroke (width 0.2032) (type solid)) (layer "F.Fab") (tstamp 46ee07f5-b141-4401-a5b9-c170b6e98cfb))
+  (fp_poly
+    (pts
+      (xy -2.1549 -2.2)
+      (xy -1.6551 -2.2)
+      (xy -1.6551 -3.1)
+      (xy -2.1549 -3.1)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 817f26ee-8b97-4175-9479-34f7d3a7133b))
+  (fp_poly
+    (pts
+      (xy -2.1549 3.1)
+      (xy -1.6551 3.1)
+      (xy -1.6551 2.2)
+      (xy -2.1549 2.2)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 2938b217-6d79-4afb-98bf-d3635335c0e6))
+  (fp_poly
+    (pts
+      (xy -0.8849 -2.2)
+      (xy -0.3851 -2.2)
+      (xy -0.3851 -3.1)
+      (xy -0.8849 -3.1)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp aca4c1df-c762-4300-8f8d-329ac80d6ecc))
+  (fp_poly
+    (pts
+      (xy -0.8849 3.1)
+      (xy -0.3851 3.1)
+      (xy -0.3851 2.2)
+      (xy -0.8849 2.2)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp d348b155-6a9b-482f-802f-4e10959fd05d))
+  (fp_poly
+    (pts
+      (xy 0.3851 -2.2)
+      (xy 0.8849 -2.2)
+      (xy 0.8849 -3.1)
+      (xy 0.3851 -3.1)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp a3078998-18e7-4d75-98df-305c4fa38ddc))
+  (fp_poly
+    (pts
+      (xy 0.3851 3.1)
+      (xy 0.8849 3.1)
+      (xy 0.8849 2.2)
+      (xy 0.3851 2.2)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp 19ae0828-5a73-48e5-9ab7-45e7c9a32400))
+  (fp_poly
+    (pts
+      (xy 1.6551 -2.2)
+      (xy 2.1549 -2.2)
+      (xy 2.1549 -3.1)
+      (xy 1.6551 -3.1)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp ea53bedd-6cc1-402e-b3d5-f94eb2865d0b))
+  (fp_poly
+    (pts
+      (xy 1.6551 3.1)
+      (xy 2.1549 3.1)
+      (xy 2.1549 2.2)
+      (xy 1.6551 2.2)
+    )
+
+    (stroke (width 0) (type default)) (fill solid) (layer "F.Fab") (tstamp a6f44cb0-53b6-4471-b778-ce7de789623b))
+  (pad "1" smd rect (at -1.905 2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 83d4b699-3f2c-44ad-a235-015b5212e567))
+  (pad "2" smd rect (at -0.635 2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 3d54c365-d510-4ef1-bc00-7f06ce1b7ec3))
+  (pad "3" smd rect (at 0.635 2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 50b7dda3-4966-4ecb-8e88-b1d70682495e))
+  (pad "4" smd rect (at 1.905 2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 169758ab-7a40-439a-8c72-b9dbeec44a17))
+  (pad "5" smd rect (at 1.905 -2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 55d2dfda-673d-481e-ba16-3fc8626c5296))
+  (pad "6" smd rect (at 0.635 -2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 9d5e0707-a1fd-4e70-8717-2bb1f339d342))
+  (pad "7" smd rect (at -0.635 -2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp 79e1aa76-b786-454e-9ef8-8aa07f5d96e8))
+  (pad "8" smd rect (at -1.905 -2.6) (size 0.6 1.6) (layers "F.Cu" "F.Paste" "F.Mask")
+    (solder_mask_margin 0.03175) (thermal_bridge_angle 0) (tstamp f12df293-d574-4bdc-8c81-d8936c0cfbbc))
+)
