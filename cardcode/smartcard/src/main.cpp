@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <SPI.h>
-#include <mfrc522.h>
+
+#include <PN532_SPI.h>
+#include "PN532.h"
 #include <GxEPD2_BW.h>
 #include <Fonts/FreeMonoBold9pt7b.h>
 #include "numbers.h"
@@ -13,7 +15,9 @@
 #define RST_PIN 9
 #define SS_PIN 4
 
-MFRC522 mfrc522(SS_PIN , RST_PIN);
+PN532_SPI pn532spi(SPI, SS_PIN);
+PN532 nfc(pn532spi);
+String tagid = "None";
 
 void helloWorld();
 void displayBarcode();
@@ -25,11 +29,17 @@ void drawCode39(int x, int y, int width, int height, int pitch,  String data);
 
 void setup(){
     Serial.begin(115200);
-    SPI.begin();
-    mfrc522.PCD_Init();
+    // SPI.begin();
+    nfc.begin();
+    uint32_t versiondata = nfc.getFirmwareVersion();
+    if (! versiondata){
+        Serial.print("Didn't find PN53x board");
+        while (1);
+    }
+    Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX);
+    nfc.SAMConfig();
     // display.init(115200, true, 2, false);
     delay(2);
-    mfrc522.PCD_DumpVersionToSerial();
     Serial.println("Scan PICC to see UID, SAK, type, and dat blocks...");
     // displayUPC();
 
@@ -128,14 +138,22 @@ void helloWorld()
   while (display.nextPage());
 }
 
-void loop(){
-    if(!mfrc522.PICC_IsNewCardPresent()){
-        return;
+void readNFC(){
+    uint8_t success;
+    uint8_t uid[] = {0,0,0,0,0,0,0,0};
+    uint8_t uidLength;
+    success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+    if(success){
+        Serial.println("Found an ISO14443A card");
+        Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
+        Serial.print("  UID Value: ");
+        nfc.PrintHex(uid, uidLength);
+        Serial.println("");
     }
+    delay(1000);
+}
 
-    if(!mfrc522.PICC_ReadCardSerial()){
-        return;
-    }
-    mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
+void loop(){
+    readNFC();
 
 }
