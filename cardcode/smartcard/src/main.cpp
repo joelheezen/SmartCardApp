@@ -15,9 +15,9 @@
 #define RST_PIN 9
 #define SS_PIN 4
 
-PN532_SPI pn532spi(SPI, SS_PIN);
-PN532 nfc(pn532spi);
-String tagid = "None";
+// PN532_SPI pn532spi(SPI, SS_PIN);
+// PN532 nfc(pn532spi);
+// String tagid = "None";
 
 void helloWorld();
 void displayBarcode();
@@ -30,30 +30,31 @@ void drawCode39(int x, int y, int width, int height, int pitch,  String data);
 void setup(){
     Serial.begin(115200);
     // SPI.begin();
-    nfc.begin();
-    uint32_t versiondata = nfc.getFirmwareVersion();
-    if (! versiondata){
-        Serial.print("Didn't find PN53x board");
-        while (1);
-    }
-    Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX);
-    nfc.SAMConfig();
-    // display.init(115200, true, 2, false);
-    delay(2);
+    // nfc.begin();
+    // uint32_t versiondata = nfc.getFirmwareVersion();
+    // if (! versiondata){
+    //     Serial.print("Didn't find PN53x board");
+    //     while (1);
+    // }
+    // Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX);
+    // nfc.SAMConfig();
+    display.init(115200, true, 2, false);
+    // delay(2);
     Serial.println("Scan PICC to see UID, SAK, type, and dat blocks...");
     // displayUPC();
 
-    // display.setRotation(1);
-    // display.fillScreen(GxEPD_WHITE);
-    // displayCode39(10, 1, "*0966307*");
-    // display.display();
+    display.setRotation(1);
+    display.fillScreen(GxEPD_WHITE);
+    displayCode39(10, 1, "*0966307*");
+    display.display();
 
-    // display.setRotation(1);
-    // display.fillScreen(GxEPD_WHITE);
-    // displayUPC(10, 1, "0966307");
-    // display.display();
+    display.setRotation(1);
+    display.fillScreen(GxEPD_WHITE);
+    displayUPC(10, 1, "0966307");
+    display.display();
 
-    // display.hibernate();
+    display.hibernate();
+    
 }
 
 const char HelloWorld[] = "Hello World!";
@@ -138,22 +139,22 @@ void helloWorld()
   while (display.nextPage());
 }
 
-void readNFC(){
-    uint8_t success;
-    uint8_t uid[] = {0,0,0,0,0,0,0,0};
-    uint8_t uidLength;
-    success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
-    if(success){
-        Serial.println("Found an ISO14443A card");
-        Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
-        Serial.print("  UID Value: ");
-        nfc.PrintHex(uid, uidLength);
-        Serial.println("");
-    }
-    delay(1000);
-}
+// void readNFC(){
+//     uint8_t success;
+//     uint8_t uid[] = {0,0,0,0,0,0,0,0};
+//     uint8_t uidLength;
+//     success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+//     if(success){
+//         Serial.println("Found an ISO14443A card");
+//         Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
+//         Serial.print("  UID Value: ");
+//         nfc.PrintHex(uid, uidLength);
+//         Serial.println("");
+//     }
+//     delay(1000);
+// }
 
 void loop(){
-    readNFC();
+    // readNFC();
 
 }
