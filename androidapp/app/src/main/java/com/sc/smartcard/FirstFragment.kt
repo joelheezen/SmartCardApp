@@ -1,6 +1,7 @@
 package com.sc.smartcard
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -22,9 +23,7 @@ class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private var barNum = "empty"
-
-
-
+    private lateinit var sharedPref: SharedPreferences
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -36,6 +35,7 @@ class FirstFragment : Fragment() {
     ): View? {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        sharedPref = requireActivity().getSharedPreferences(Constants.PREF_FILE_KEY, Context.MODE_PRIVATE)
         return binding.root
 
     }
@@ -43,12 +43,8 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         binding.linLay.removeAllViews()
-
-        sharedPref.getStringSet("barcodes", HashSet())?.forEach {
-            Log.e("loop", it)
-
+        Constants.getBarcodes(requireContext()).forEach{
             val inflater = LayoutInflater.from(context)
             val layout = inflater.inflate(R.layout.card, null, false)
             val cv = layout.findViewById<CardView>(R.id.CV)
@@ -82,11 +78,12 @@ class FirstFragment : Fragment() {
     }
 
     private fun editFragment(data:String){
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
-        with (sharedPref.edit()){
-            putString("tempData", data)
-            apply()
-        }
+//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
+//        with (sharedPref.edit()){
+//            putString("tempData", data)
+//            apply()
+//        }
+        Constants.saveTempData(requireContext(), data)
         Log.e("test", data)
 
     }

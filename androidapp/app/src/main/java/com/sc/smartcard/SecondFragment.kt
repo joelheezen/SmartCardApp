@@ -1,6 +1,7 @@
 package com.sc.smartcard
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -23,6 +24,7 @@ class SecondFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +34,14 @@ class SecondFragment : Fragment() {
 
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        sharedPref = requireActivity().getSharedPreferences(Constants.PREF_FILE_KEY, Context.MODE_PRIVATE)
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
+//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?:return
         val rename = "please scan to get number"
         val oldSet = sharedPref.getStringSet("barcodes", HashSet<String>())
         val newSet = HashSet<String>()

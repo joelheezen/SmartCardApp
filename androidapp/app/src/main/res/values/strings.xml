@@ -2,6 +2,8 @@
     <string name="app_name">SmartCard</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
+    <string name="servicedesc" translatable="false">Description</string>
+    <string name="aiddescription" translatable="false">AID Description</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
@@ -10,6 +12,7 @@
     <string name="hint_your_message">Your message</string>
     <string name="label_your_message">Outgoing NFC message:</string>
     <string name="title_btn_set">Set Message</string>
+    <string name="preference_file_key">SharedPreferenceFileKey</string>
 
 
     <string name="lorem_ipsum">
