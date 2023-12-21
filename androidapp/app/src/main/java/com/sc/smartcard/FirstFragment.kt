@@ -55,7 +55,6 @@ class FirstFragment : Fragment() {
             val values = it.split(delimiter)
             cv.findViewById<TextView>(R.id.textView).text = values[0]
             cv.findViewById<TextView>(R.id.textView2).text = values[1]
-            cv.findViewById<TextView>(R.id.textView3).text = values[2]
             cv.setOnClickListener {view ->
                 editFragment(it)
                 thirdFragment()
