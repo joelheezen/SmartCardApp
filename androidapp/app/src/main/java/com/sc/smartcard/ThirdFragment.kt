@@ -44,7 +44,6 @@ class ThirdFragment : Fragment() {
         if (values != null){
             binding.nameTv.text = values[0]
             binding.codeTv.text = values[1]
-            binding.formatTv.text = values[2]
         }
         binding.delBtn.setOnClickListener{view ->
             //save new data and return back to firstfragment
