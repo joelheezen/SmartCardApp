@@ -4,6 +4,7 @@
 
 #define PN532_IRQ   (5)
 #define PN532_RESET (9)
+#define PN532DEBUG 1
 
 Adafruit_PN532 nfc(4);
 
@@ -16,6 +17,16 @@ uint8_t SELECT_APDU[] = {
   0xF0, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, /* AID  */
   0x00  /* Le  */
 };
+
+// uint8_t SELECT_APDU[] = { 
+//   0x00, /* CLA */
+//   0xA4, /* INS */
+//   0x04, /* P1  */
+//   0x00, /* P2  */
+//   0x05, /* Length of AID  */
+//   0xF2, 0x22, 0x22, 0x22, 0x22,
+//   0x00  /* Le  */
+// };
 
 void setup() {
   Serial.begin(115200);
@@ -40,21 +51,30 @@ void setup() {
 }
 
 void loop() {
-  // Serial.println("Listening...");
-  if (nfc.inListPassiveTarget()) {
-    Serial.println("Something's there...");
+  uint8_t success;
+  uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };
+  uint8_t uidLength;
+  uint8_t responseLength;
 
-    uint8_t response[255];
-    uint8_t responseLength = sizeof(response);
+  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
 
-    bool success = nfc.inDataExchange(SELECT_APDU, sizeof(SELECT_APDU), response, &responseLength);
-
-    if (success) {
-      Serial.println("Sent");
-      nfc.PrintHexChar(response, responseLength);
-    } else {
-      Serial.println("Not sent");
+  if (success) {
+    Serial.println("Found an NFC card!");
+    Serial.print("UID Length: "); Serial.print(uidLength, DEC);Serial.println(" Bytes");
+    Serial.print("UID value: ");
+    for(uint8_t i = 0; i < uidLength; i++){
+      Serial.print(" 0x");Serial.print(uid[i], HEX);
     }
+    Serial.println();
+    uint8_t response[] = { 0xAA, 0xBB, 0xCC, 0xDD};
+    responseLength = sizeof(response);
+    nfc.inDataExchange(uid, uidLength, response, &responseLength);
   }
+}
+
+
+void parseData(String data){
+  Serial.println(data);
+
 }
 
