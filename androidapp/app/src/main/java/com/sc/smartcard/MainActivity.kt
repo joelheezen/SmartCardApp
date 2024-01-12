@@ -1,68 +1,83 @@
 package com.sc.smartcard
 
-import android.app.PendingIntent
-import android.content.Intent
-import android.nfc.NdefMessage
-import android.nfc.NdefRecord
-import android.nfc.NfcAdapter
-import android.nfc.Tag
-import android.nfc.tech.Ndef
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import com.sc.smartcard.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private var nfcAdapter: NfcAdapter? = null
-    private var pendingIntent: PendingIntent? = null
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        if (!nfcAdapter?.isEnabled!!) {
-            // NFC is not enabled, prompt the user to enable it
-            // You can customize this part based on your application's requirements
-            // For simplicity, a toast message is used here
-            Toast.makeText(this, "Please enable NFC", Toast.LENGTH_SHORT).show()
+        setSupportActionBar(binding.toolbar)
+
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        val scanner = GmsBarcodeScanning.getClient(this)
+
+        val moduleInstallRequest =
+            ModuleInstallRequest.newBuilder()
+                .addApi(scanner) //Add the scanner client to the module install request
+                .build()
+
+        val moduleInstallClient = ModuleInstall.getClient(this)
+
+        //Send an urgent module install request see https://developers.google.com/android/guides/module-install-apis#send_an_urgent_module_install_request
+        //If you'd like the OS to determine the best time, use a deferred install request, but I'd recommend the urgent one
+        //See https://developers.google.com/android/guides/module-install-apis#send_a_deferred_install_request
+        moduleInstallClient
+            .installModules(moduleInstallRequest)
+            .addOnSuccessListener {
+                if (it.areModulesAlreadyInstalled()) {
+                    Toast.makeText(this, "Modules are already installed", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    Toast.makeText(this, "Modules successfully installed", Toast.LENGTH_LONG).show()
+                }
+            }
+            .addOnFailureListener {
+                Log.e("MainActivity", "Error installing modules", it)
+            }
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
-
-        // Create a PendingIntent for the NFC foreground dispatch
-        val intent = Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    override fun onResume() {
-        super.onResume()
-        nfcAdapter?.enableForegroundDispatch(this, pendingIntent, null, null)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        nfcAdapter?.disableForegroundDispatch(this)
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-
-        if (NfcAdapter.ACTION_TECH_DISCOVERED == intent.action) {
-            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-
-            // Convert the string to bytes and send it to the Arduino
-            val dataToSend = "Hello, Arduino!".toByteArray(Charsets.UTF_8)
-
-            // Use NFC tech to communicate with the Arduino
-            val ndefMessage = NdefMessage(NdefRecord.createMime("text/plain", dataToSend))
-            val ndef = Ndef.get(tag)
-
-            // Write the NdefMessage to the tag
-            ndef?.connect()
-            ndef?.writeNdefMessage(ndefMessage)
-            ndef?.close()
-
-            // Handle any additional actions as needed
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 }

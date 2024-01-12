@@ -1,6 +1,7 @@
 package com.sc.smartcard
 
 import android.content.Context
+import android.util.Log
 
 object Constants {
     const val PREF_FILE_KEY = "your_preference_file_key"
