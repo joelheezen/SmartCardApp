@@ -18,15 +18,18 @@ class HostApduService : HostApduService() {
         }
 
         val response: ByteArray
-        sharedPref.forEach {
-            Log.d("HCE", it.toString())
-        }
+//        sharedPref.forEach {
+//            Log.d("HCE", it.toString())
+//            Log.d("HCE", it.toString().split("|")[2])
+//        }
         if (currentIndex < dataToSend!!.size) {
             val endIndex = Math.min(currentIndex + MAX_PAYLOAD_SIZE, dataToSend!!.size)
             val chunk = dataToSend!!.copyOfRange(currentIndex, endIndex)
             currentIndex = endIndex
 
             response = chunk
+            val hexString = response.joinToString(" ") { "%02X".format(it) }
+            Log.d("HCE", hexString)
         } else {
             response = "".toByteArray()
             resetData()
@@ -47,6 +50,6 @@ class HostApduService : HostApduService() {
     }
 
     companion object {
-        private const val MAX_PAYLOAD_SIZE = 64
+        private const val MAX_PAYLOAD_SIZE = 60
     }
 }
