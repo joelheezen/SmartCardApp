@@ -62,6 +62,10 @@ class SecondFragment : Fragment() {
                 Snackbar.make(view, "please change name before saving" , Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
+            else if(binding.nameEdit.text.toString().length > 21){
+                Snackbar.make(view, "text is too long, please shorten it", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
             else{
                 val numberText = binding.numberView.text as String
                 val nameText = binding.nameEdit.text.toString()
