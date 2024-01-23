@@ -9,6 +9,7 @@
 // select the display class and display driver class in the following file (new style):
 #include "GxEPD2_display_selection_new_style.h"
 #include "barcode_types.h"
+#include <EEPROM.h>
 
 #define BARCODE_HEIGHT 75
 #define BARCODE_Y_START 10
@@ -26,8 +27,8 @@ PN532_SPI pn532spi(SPI, 4);
 PN532 nfc(pn532spi);
 
 typedef struct {
-  char name[100];
-  char barcode[100];
+  char name[25];
+  char barcode[64];
   int type;
 } Card;
 
@@ -37,6 +38,7 @@ int mid = 0;
 int cardsIndex = 0;
 int currentCard = -1;
 int prevCurrentCard = -1;
+int eeAddress = 0;
 
 void printCards();
 void helloWorld();
@@ -49,31 +51,20 @@ void drawCode39(int x, int y, int width, int height, int pitch, String data);
 void drawEAN13Module(int &index, int width, String code);
 void displayEAN13(int index, int width, String str);
 void printText(Card card);
+void printText(String str);
 
 
 void setupNFC(){
   nfc.begin();
-    
   uint32_t versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
     while (1); // halt
   }
-  
-  // Got ok data, print it out!
-  Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
-  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
-  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
-
-  // Set the max number of retry attempts to read from a card
-  // This prevents us from waiting forever for a card, which is
-  // the default behaviour of the PN532.
   nfc.setPassiveActivationRetries(0x02);
   // nfc.setPassiveActivationRetries(0xFF);
-  
   // configure board to read RFID tags
   nfc.SAMConfig(); 
-
 }
 
 void setup() {
@@ -87,6 +78,13 @@ void setup() {
   display.display();
 
   setupNFC();
+  EEPROM.begin(1024);
+  EEPROM.get(0, cardsIndex);
+  Serial.println(cardsIndex);
+  for(int i = 0; i < cardsIndex; i++){
+    EEPROM.get((i*sizeof(Card))+sizeof(cardsIndex), cards[i]);
+  }
+  printCards();
 }
 
 Card parseCard(String input){
@@ -166,6 +164,11 @@ Card* getCards(){
 
     if(respBuffer.indexOf("DONE") == -1){
       Serial.println("DATA TRANSFER NOT CORRECT!!!");
+      // display.clearScreen();
+      printText("Transfer didn't succeed, try again!");
+      display.display();
+      delay(500);
+      setupNFC();
     }else{
       memset(cards, 0, sizeof(cards));
       cardsIndex = 0;
@@ -180,6 +183,13 @@ Card* getCards(){
       String entry = respBuffer.substring(startpos, respBuffer.indexOf(']'));
       cards[cardsIndex++] = parseCard(entry);
       printCards();
+      EEPROM.put(eeAddress, cardsIndex);
+      eeAddress += sizeof(cardsIndex);
+      for(int i = 0; i < cardsIndex; i++){
+        EEPROM.put((i * sizeof(Card)) + eeAddress, cards[i]);
+      }
+      eeAddress += sizeof(cards);
+      EEPROM.commit();
       currentCard = 0;
     }
   }
@@ -267,7 +277,6 @@ void displayUPC(int index, int width, String str) {
     }
     display.fillRect(index, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_WHITE);  // might be optional
     index = index + width;
-    Serial.print("L");
     if (mid == 7) {
       String code = GetUPCMid(str[1]);
     }
@@ -386,6 +395,13 @@ void drawEAN13Module(int &index, int width, String code) {
   }
 }
 
+void printText(String str){
+  display.setTextSize(2);
+  display.setTextColor(GxEPD_BLACK);
+  display.setCursor(0, 90);
+  display.print(str);  //value 1
+}
+
 void printText(Card card) {
   //print bij elke barcode welke barcode er weergegeven wordt
   display.setTextSize(2);
@@ -397,7 +413,7 @@ void printText(Card card) {
 }
 
 void displayCard(Card card){
-  display.clearScreen();
+  // display.clearScreen();
   display.fillScreen(GxEPD_WHITE);
   switch(card.type){
     case FORMAT_EAN_13:
@@ -420,7 +436,6 @@ void displayCard(Card card){
 
 void loop() {
   if(digitalRead(BUTTON_PIN)){
-    Serial.println(currentCard);
     if(cardsIndex != 0){
       currentCard = (currentCard + 1) % cardsIndex;
     }
