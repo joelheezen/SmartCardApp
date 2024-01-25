@@ -21,6 +21,7 @@
 #define BARCODE_INDEX 3
 #define BAR_WIDTH 1
 #define BUTTON_PIN 2
+#define FWD_BUTTON_PIN 10
 
 
 PN532_SPI pn532spi(SPI, 4);
@@ -51,7 +52,7 @@ void drawCode39(int x, int y, int width, int height, int pitch, String data);
 void drawEAN13Module(int &index, int width, String code);
 void displayEAN13(int index, int width, String str);
 void printText(Card card);
-void printText(String str);
+void printText(String str, int height);
 
 
 void setupNFC(){
@@ -71,6 +72,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Hello from smartcard");
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(FWD_BUTTON_PIN, INPUT_PULLUP);
 
   display.init(115200, true, 2, false);
   display.setRotation(1);
@@ -85,6 +87,9 @@ void setup() {
     EEPROM.get((i*sizeof(Card))+sizeof(cardsIndex), cards[i]);
   }
   printCards();
+  if(cardsIndex > 0){
+    currentCard = 0;
+  }
 }
 
 Card parseCard(String input){
@@ -112,7 +117,7 @@ void printCards(){
 
 }
 
-Card* getCards(){
+bool getCards(){
   bool success;
   uint8_t responseLength = 128;
   success = nfc.inListPassiveTarget();
@@ -164,8 +169,7 @@ Card* getCards(){
 
     if(respBuffer.indexOf("DONE") == -1){
       Serial.println("DATA TRANSFER NOT CORRECT!!!");
-      // display.clearScreen();
-      printText("Transfer didn't succeed, try again!");
+      printText("Transfer didn't succeed, try again!", 90);
       display.display();
       delay(500);
       setupNFC();
@@ -191,9 +195,10 @@ Card* getCards(){
       eeAddress += sizeof(cards);
       EEPROM.commit();
       currentCard = 0;
+      return true;
     }
   }
-  return cards;
+  return false;
 }
 
 void displayCode39(int index, int width, String str) {;
@@ -395,10 +400,10 @@ void drawEAN13Module(int &index, int width, String code) {
   }
 }
 
-void printText(String str){
+void printText(String str, int height){
   display.setTextSize(2);
   display.setTextColor(GxEPD_BLACK);
-  display.setCursor(0, 90);
+  display.setCursor(0, height);
   display.print(str);  //value 1
 }
 
@@ -435,15 +440,28 @@ void displayCard(Card card){
 
 
 void loop() {
-  if(digitalRead(BUTTON_PIN)){
-    if(cardsIndex != 0){
+  if(cardsIndex != 0){
+    if(digitalRead(FWD_BUTTON_PIN) && digitalRead(BUTTON_PIN)){
+      display.fillScreen(GxEPD_WHITE);
+      printText("READING MODE...", 40);
+      display.display();
+      setupNFC();
+      while(!getCards() && !digitalRead(FWD_BUTTON_PIN)){
+        delay(1);
+      }
+    }
+    if(digitalRead(BUTTON_PIN)){
       currentCard = (currentCard + 1) % cardsIndex;
     }
+    if(digitalRead(FWD_BUTTON_PIN)){
+      currentCard = (currentCard -1 ) % cardsIndex;
+      if(currentCard < 0){
+        currentCard = cardsIndex -1;
+      }
+    }
   }
-  getCards();
   if(currentCard != prevCurrentCard){
     displayCard(cards[currentCard]);
     prevCurrentCard = currentCard;
-    setupNFC();
   }
 }
