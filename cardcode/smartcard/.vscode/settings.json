@@ -3,6 +3,16 @@
         "*.tcc": "cpp",
         "unordered_map": "cpp",
         "numeric": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "random": "cpp",
+        "ranges": "cpp",
+        "memory": "cpp",
+        "initializer_list": "cpp"
     }
 }

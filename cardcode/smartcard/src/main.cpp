@@ -58,14 +58,13 @@ void printText(String str, int height);
 void setupNFC(){
   nfc.begin();
   uint32_t versiondata = nfc.getFirmwareVersion();
-  // Serial.print("Firmware version: ");
-  // Serial.println(versiondata);
+  Serial.print("Firmware version: ");
+  Serial.println(versiondata);
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
     while (1); // halt
   }
   nfc.setPassiveActivationRetries(0x02);
-  // nfc.setPassiveActivationRetries(0xFF);
   // configure board to read RFID tags
   nfc.SAMConfig(); 
 }
@@ -74,7 +73,6 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Hello from smartcard");
   pinMode(BUTTON_PIN, INPUT_PULLUP);
-  // pinMode(FWD_BUTTON_PIN, INPUT_PULLUP);
 
   display.init(115200, true, 2, false);
   display.setRotation(1);
@@ -170,6 +168,7 @@ bool getCards(){
     }while(success);
 
     if(respBuffer.indexOf("DONE") == -1){
+      setupNFC();
       Serial.println("DATA TRANSFER NOT CORRECT!!!");
       printText("Transfer didn't succeed, try again!", 90);
       display.display();
@@ -310,7 +309,6 @@ void displayUPC(int index, int width, String str) {
     }
     display.fillRect(index, BARCODE_Y_START, width, BARCODE_HEIGHT, GxEPD_WHITE);  // might be optional
     index = index + width;
-    Serial.print("R");
   }
   // StartAndEndUpc(10,1);
 
@@ -357,10 +355,8 @@ void displayEAN13(int index, int width, String str) {
 
   for (int i = 0; i <= 5; i++) {
     if (order[i] == 'L') {
-      Serial.println(order[i]);
       code = getEAN13LeftL(str[i + 1]);
     } else if (order[i] == 'G') {
-      Serial.println(order[i]);
       code = getEAN13LeftG(str[i + 1]);
     }
     int bw = width;
@@ -442,29 +438,29 @@ void displayCard(Card card){
 
 
 void loop() {
-  // setupnfc();
-  // getCards();
-  // delay(100);
-  // if(cardsIndex != 0){
-    if(analogRead(FWD_BUTTON_PIN) > 500 && digitalRead(BUTTON_PIN)){
-      // display.fillScreen(GxEPD_WHITE);
-      // printText("READING MODE...", 40);
-      // display.display();
-      setupNFC();
-      while(!getCards() && !analogRead(FWD_BUTTON_PIN) > 500){
-        delay(1);
+  if(analogRead(FWD_BUTTON_PIN) > 500 && digitalRead(BUTTON_PIN)){
+    display.fillScreen(GxEPD_WHITE);
+    printText("READING MODE...", 40);
+    display.display();
+    setupNFC();
+    while(!getCards()){
+      if(analogRead(FWD_BUTTON_PIN) > 500){
+        break;
       }
+      delay(1);
     }
-    if(digitalRead(BUTTON_PIN)){
+    nfc.SAMConfig();
+  }else{
+    if(analogRead(FWD_BUTTON_PIN) > 500){
       currentCard = (currentCard + 1) % cardsIndex;
     }
-    if(analogRead(FWD_BUTTON_PIN) > 500){
+    if(digitalRead(BUTTON_PIN)){
       currentCard = (currentCard -1 ) % cardsIndex;
       if(currentCard < 0){
         currentCard = cardsIndex -1;
       }
     }
-  // }
+  }
   if(currentCard != prevCurrentCard){
     displayCard(cards[currentCard]);
     prevCurrentCard = currentCard;
