@@ -20,11 +20,11 @@
 #define BUFFSIZE 1024
 #define BARCODE_INDEX 3
 #define BAR_WIDTH 1
-#define BUTTON_PIN 2
-#define FWD_BUTTON_PIN 10
+#define BUTTON_PIN 10
+#define FWD_BUTTON_PIN A0
 
 
-PN532_SPI pn532spi(SPI, 4);
+PN532_SPI pn532spi(SPI, SS_PIN);
 PN532 nfc(pn532spi);
 
 typedef struct {
@@ -58,6 +58,8 @@ void printText(String str, int height);
 void setupNFC(){
   nfc.begin();
   uint32_t versiondata = nfc.getFirmwareVersion();
+  // Serial.print("Firmware version: ");
+  // Serial.println(versiondata);
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
     while (1); // halt
@@ -72,7 +74,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Hello from smartcard");
   pinMode(BUTTON_PIN, INPUT_PULLUP);
-  pinMode(FWD_BUTTON_PIN, INPUT_PULLUP);
+  // pinMode(FWD_BUTTON_PIN, INPUT_PULLUP);
 
   display.init(115200, true, 2, false);
   display.setRotation(1);
@@ -440,26 +442,29 @@ void displayCard(Card card){
 
 
 void loop() {
-  if(cardsIndex != 0){
-    if(digitalRead(FWD_BUTTON_PIN) && digitalRead(BUTTON_PIN)){
-      display.fillScreen(GxEPD_WHITE);
-      printText("READING MODE...", 40);
-      display.display();
+  // setupnfc();
+  // getCards();
+  // delay(100);
+  // if(cardsIndex != 0){
+    if(analogRead(FWD_BUTTON_PIN) > 500 && digitalRead(BUTTON_PIN)){
+      // display.fillScreen(GxEPD_WHITE);
+      // printText("READING MODE...", 40);
+      // display.display();
       setupNFC();
-      while(!getCards() && !digitalRead(FWD_BUTTON_PIN)){
+      while(!getCards() && !analogRead(FWD_BUTTON_PIN) > 500){
         delay(1);
       }
     }
     if(digitalRead(BUTTON_PIN)){
       currentCard = (currentCard + 1) % cardsIndex;
     }
-    if(digitalRead(FWD_BUTTON_PIN)){
+    if(analogRead(FWD_BUTTON_PIN) > 500){
       currentCard = (currentCard -1 ) % cardsIndex;
       if(currentCard < 0){
         currentCard = cardsIndex -1;
       }
     }
-  }
+  // }
   if(currentCard != prevCurrentCard){
     displayCard(cards[currentCard]);
     prevCurrentCard = currentCard;
